@@ -1,0 +1,15 @@
+/target
+**/target
+Cargo.lock
+*.pdb
+*.exe
+*.o
+*.obj
+*.s
+*.ll
+.DS_Store
+*.swp
+*.swo
+.idea/
+.vscode/
+*.bak
