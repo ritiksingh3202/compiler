@@ -1,0 +1,3 @@
+print(true);
+print("hello");
+print(42);
