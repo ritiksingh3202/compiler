@@ -23,3 +23,88 @@ The compiler follows a clean multi-tier pipeline with dual backends (a tree-walk
                                                        ▼
                                       ┌─────────────────────────────────┐
                                       │      Hand-written Lexer         │ (Stream of Tokens + Spans)
+                                      └────────────────┬────────────────┘
+                                                       │
+                                                       ▼
+                                      ┌─────────────────────────────────┐
+                                      │    Recursive Descent / Pratt    │ (Abstract Syntax Tree)
+                                      └────────────────┬────────────────┘
+                                                       │
+                                                       ▼
+                                      ┌─────────────────────────────────┐
+                                      │   Semantic Analysis & Typeck    │ (Symbol Tables & Type Resolution)
+                                      └───────┬─────────────────┬───────┘
+                                              │                 │
+                         Reference Semantics  │                 │ Compilation
+                                              ▼                 ▼
+                          ┌─────────────────────┐   ┌─────────────────────────┐
+                          │ Tree-Walk Evaluator │   │     AST Lowering Pass   │
+                          └─────────────────────┘   └───────────┬─────────────┘
+                                                                │
+                                                                ▼
+                                                    ┌─────────────────────────┐
+                                                    │ Three-Address Code (IR) │
+                                                    └───────────┬─────────────┘
+                                                                │
+                                                                ▼
+                                                    ┌─────────────────────────┐
+                                                    │ Optimizations: CF & DCE │ (Constant Folding & Dead Code)
+                                                    └───────────┬─────────────┘
+                                                                │
+                                                                ▼
+                                                    ┌─────────────────────────┐
+                                                    │  x86-64 Code Generator  │ (AT&T Assembly, System V ABI)
+                                                    └───────────┬─────────────┘
+                                                                │
+                                                                ▼
+                                                    ┌─────────────────────────┐
+                                                    │    System Assembler     │ (cc / gcc)
+                                                    └───────────┬─────────────┘
+                                                                │
+                                                                ▼
+                                                    ┌─────────────────────────┐
+                                                    │    Native Executable    │
+                                                    └─────────────────────────┘
+```
+
+---
+
+## Compiler Stages Overview
+
+1. **Lexical Analysis (`src/lexer/`, `include/tiny/lexer.hpp`)**
+   - Character scanner tracking byte-accurate source spans (`line:col` locations).
+   - Recognizes keywords (`fn`, `let`, `if`, `else`, `while`, `return`, `int`, `bool`, `string`), multi-character operators (`==`, `!=`, `<=`, `>=`, `&&`, `||`), identifiers, and escaped string literals.
+
+2. **Parsing & AST Construction (`src/parser/`, `src/ast/`)**
+   - Hybrid recursive-descent statement parser with Pratt operator precedence for expressions.
+   - Distinct precedence binding for arithmetic, comparisons, equality, and short-circuit boolean logic.
+   - Clear AST representation utilizing polymorphic expression nodes and statement variants.
+
+3. **Semantic Analysis & Type Checking (`src/sema/`)**
+   - Two-pass validation: pass 1 gathers top-level function signatures for forward references and recursion; pass 2 checks expressions, variable bindings, and function bodies.
+   - Lexical scoping with shadowing support and detection of undeclared/re-declared identifiers.
+   - Return-path validation guaranteeing that non-void functions return a value along every execution path.
+   - Clear diagnostics with caret pointers displaying source code context.
+
+4. **Reference Interpreter (`src/interpreter/`)**
+   - Tree-walking evaluator operating directly on the verified AST.
+   - Serves as the ground truth reference for runtime semantics and differential validation.
+
+5. **Intermediate Representation & Optimization (`src/ir/`)**
+   - Three-Address Code (TAC) linear representation with explicit basic blocks, jumps, labels, and temporaries.
+   - Constant folding pass: statically computes compile-time binary/unary operations.
+   - Dead-code elimination (DCE): eliminates unreachable basic blocks following unconditional jumps or returns.
+
+6. **Native x86-64 Assembly Generator (`src/codegen/`)**
+   - Generates GNU AT&T syntax assembly compliant with the **System V AMD64 ABI**.
+   - Handles stack alignment, argument passing, caller/callee-saved registers, function prologues/epilogues, and standard runtime library linking (`printf`/`puts`).
+
+---
+
+## Language at a Glance
+
+```rust
+// Recursive Fibonacci
+fn fib(n: int) -> int {
+    if n <= 1 {
+        return n;
