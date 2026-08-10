@@ -13,3 +13,13 @@ endif()
 
 include_directories(include)
 
+set(TINY_SOURCES
+    src/lexer/lexer.cpp
+    src/ast/ast.cpp
+    src/parser/parser.cpp
+    src/sema/typeck.cpp
+    src/interpreter/eval.cpp
+    src/ir/ir.cpp
+    src/ir/lower.cpp
+    src/ir/opt.cpp
+    src/codegen/x86.cpp
