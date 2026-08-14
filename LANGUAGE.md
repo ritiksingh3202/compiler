@@ -43,3 +43,11 @@ primary     ::= IntLit | StringLit | "true" | "false" | Ident | "(" expr ")"
 
 Semicolons are required after `let`, `return`, and expression statements. They are not used after `if` / `while` / `fn` / bare blocks.
 
+## Semantics
+
+- **Scopes**: function bodies, `if`/`else`/`while` bodies, and bare blocks introduce scopes. Nested scopes may shadow outer names.
+- **Functions**: all signatures are registered before bodies are checked (forward references and mutual recursion work).
+- **Returns**: non-`void` functions must return on every path through `if`/`else` (loops are not treated as always-returning).
+- **`print(x)`**: builtin; one argument of type `int`, `bool`, or `string`; returns `void`.
+- **Operators**: arithmetic/`%` on `int`; comparisons on `int`; `==`/`!=` on `int`/`bool`/`string`; `&&`/`||`/`!` on `bool` with short-circuit evaluation.
+
