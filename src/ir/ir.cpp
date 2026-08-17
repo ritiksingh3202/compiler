@@ -88,3 +88,24 @@ std::string IrFunction::display() const {
         escaped += "\"";
         out += "  str[" + std::to_string(i) + "] = " + escaped + "\n";
     }
+    for (const auto& instr : instructions) {
+        if (std::holds_alternative<InstrLabel>(instr.data)) {
+            out += instr.to_string() + "\n";
+        } else {
+            out += "  " + instr.to_string() + "\n";
+        }
+    }
+    return out;
+}
+
+std::string Module::display() const {
+    std::string out;
+    for (const auto& f : functions) {
+        out += f.display();
+        out += "\n";
+    }
+    out += main.display();
+    return out;
+}
+
+} // namespace tiny
