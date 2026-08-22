@@ -23,3 +23,13 @@ set(TINY_SOURCES
     src/ir/lower.cpp
     src/ir/opt.cpp
     src/codegen/x86.cpp
+)
+
+add_library(tiny_core STATIC ${TINY_SOURCES})
+target_include_directories(tiny_core PUBLIC include)
+
+add_executable(tiny src/cli/main.cpp)
+target_link_libraries(tiny PRIVATE tiny_core)
+
+enable_testing()
+
