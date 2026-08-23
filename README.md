@@ -108,3 +108,33 @@ The compiler follows a clean multi-tier pipeline with dual backends (a tree-walk
 fn fib(n: int) -> int {
     if n <= 1 {
         return n;
+    }
+    return fib(n - 1) + fib(n - 2);
+}
+
+fn main() {
+    let count: int = 10;
+    let result: int = fib(count);
+    print(result); // Built-in print supports int, bool, string
+}
+```
+
+Detailed grammar specifications and semantics are documented in [LANGUAGE.md](LANGUAGE.md).
+
+---
+
+## Requirements
+
+- **C++ Compiler**: C++20 compliant compiler (`clang++` >= 14 or `g++` >= 11)
+- **Build System**: `cmake` >= 3.20 and build tools (`make`, `ninja`, or MinGW)
+- **Native Target**: Linux x86-64 (or WSL on Windows) with `cc` or `gcc` installed for assembling and linking. The interpreter is completely cross-platform and runs natively on Windows, macOS, and Linux.
+
+---
+
+## Building and Running
+
+### 1. Build the Project
+```bash
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build --config Release
+```
