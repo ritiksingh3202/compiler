@@ -33,3 +33,15 @@ target_link_libraries(tiny PRIVATE tiny_core)
 
 enable_testing()
 
+function(add_tiny_test test_name test_source)
+    add_executable(${test_name} ${test_source})
+    target_link_libraries(${test_name} PRIVATE tiny_core)
+    add_test(NAME ${test_name} COMMAND ${test_name})
+endfunction()
+
+add_tiny_test(test_lexer tests/test_lexer.cpp)
+add_tiny_test(test_parser tests/test_parser.cpp)
+add_tiny_test(test_sema tests/test_sema.cpp)
+add_tiny_test(test_interp tests/test_interp.cpp)
+add_tiny_test(test_ir tests/test_ir.cpp)
+add_tiny_test(test_golden tests/test_golden.cpp)
