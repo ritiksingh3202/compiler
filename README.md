@@ -138,3 +138,38 @@ Detailed grammar specifications and semantics are documented in [LANGUAGE.md](LA
 cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build --config Release
 ```
+
+The build produces:
+- `build/tiny`: The compiler CLI driver.
+- `build/libtiny_core.a`: The static compiler library.
+- `build/test_*`: Unit and golden test executables.
+
+### 2. Run Tests
+```bash
+ctest --test-dir build --output-on-failure
+```
+
+### 3. Run Programs Directly (Interpreter)
+```bash
+./build/tiny run examples/fib.tiny
+# Output: 55
+```
+
+### 4. Compile to a Native Executable (x86-64 Linux)
+```bash
+./build/tiny build examples/fib.tiny -o fib
+./fib
+# Output: 55
+```
+
+### 5. Inspect Intermediate Pipeline Stages
+```bash
+# Print parsed AST structure
+./build/tiny build examples/fib.tiny --emit-ast
+
+# Print three-address intermediate representation
+./build/tiny build examples/fib.tiny --emit-ir
+
+# Enable IR optimizations (constant folding and dead-code elimination)
+./build/tiny build examples/fib.tiny --opt -o fib
+```
