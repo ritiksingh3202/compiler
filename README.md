@@ -173,3 +173,38 @@ ctest --test-dir build --output-on-failure
 # Enable IR optimizations (constant folding and dead-code elimination)
 ./build/tiny build examples/fib.tiny --opt -o fib
 ```
+
+---
+
+## Test Suite & Golden Examples
+
+The test suite validates every layer of the compiler against a suite of 59 unit tests and golden examples:
+
+| Test Target | Component Tested | Coverage |
+|-------------|------------------|----------|
+| `test_lexer` | Tokenization, spans, escape sequences, number parsing | 13 test cases |
+| `test_parser` | AST nodes, operator precedence, statement hierarchies | 14 test cases |
+| `test_sema` | Type checking, scoping, shadowing, return validation | 21 test cases |
+| `test_interp` | Reference evaluation, recursion, variable mutation | 7 test cases |
+| `test_ir` | TAC lowering, control-flow branching, optimizations | 3 test cases |
+| `test_golden` | End-to-end execution across the complete example corpus | 6 golden suites |
+
+### Golden Corpus
+
+| File | Feature Demonstrated | Expected Output |
+|------|----------------------|-----------------|
+| `examples/hello.tiny` | Basic types, strings, boolean literals | `true`, `hello`, `42` |
+| `examples/fib.tiny` | Recursion, conditionals, arithmetic | `55` |
+| `examples/loops.tiny` | While loops, mutable assignment, accumulators | `10` |
+| `examples/nested_ret.tiny` | Deeply nested returns across branches | `-1`, `0`, `1`, `2` |
+| `examples/rec_while.tiny` | Loops combined with recursive calls | `15` |
+| `examples/mixed_types.tiny` | Mixed expressions, boolean logic, strings | `tiny`, `85`, `true`, `B`, `C` |
+
+---
+
+## Project Structure
+
+```
+compiler/
+├── include/
+│   └── tiny/
