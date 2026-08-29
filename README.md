@@ -32,3 +32,14 @@ tiny build examples/fib.tiny --emit-ir
 tiny build examples/fib.tiny --opt -o fib
 ```
 
+## Examples
+
+| Program | Output |
+|---------|--------|
+| `examples/fib.tiny` | `55` |
+| `examples/loops.tiny` | `10` |
+| `examples/hello.tiny` | `true` / `hello` / `42` |
+| `examples/rec_while.tiny` | `15` |
+| `examples/nested_ret.tiny` | `-1` / `0` / `1` / `2` |
+| `examples/mixed_types.tiny` | `tiny` / `85` / `true` / `B` / `C` |
+
