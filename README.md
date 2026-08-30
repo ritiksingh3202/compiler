@@ -43,3 +43,18 @@ tiny build examples/fib.tiny --opt -o fib
 | `examples/nested_ret.tiny` | `-1` / `0` / `1` / `2` |
 | `examples/mixed_types.tiny` | `tiny` / `85` / `true` / `B` / `C` |
 
+## Crates
+
+| Crate | Role |
+|-------|------|
+| `tiny-lexer` | Tokens, spans, diagnostics |
+| `tiny-ast` | AST types |
+| `tiny-parser` | Recursive descent + Pratt |
+| `tiny-sema` | Scopes & type checking |
+| `tiny-interp` | Reference interpreter |
+| `tiny-ir` | TAC IR, lowering, opts |
+| `tiny-codegen` | x86-64 AT&T assembly |
+| `tiny-cli` | `tiny` binary |
+
+See [LANGUAGE.md](LANGUAGE.md) for grammar and semantics.
+
