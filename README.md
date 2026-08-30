@@ -58,3 +58,10 @@ tiny build examples/fib.tiny --opt -o fib
 
 See [LANGUAGE.md](LANGUAGE.md) for grammar and semantics.
 
+## Tests
+
+```bash
+cargo test --workspace
+```
+
+On Linux, golden tests also compile each example and assert native stdout matches the interpreter.
