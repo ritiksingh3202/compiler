@@ -51,3 +51,10 @@ Semicolons are required after `let`, `return`, and expression statements. They a
 - **`print(x)`**: builtin; one argument of type `int`, `bool`, or `string`; returns `void`.
 - **Operators**: arithmetic/`%` on `int`; comparisons on `int`; `==`/`!=` on `int`/`bool`/`string`; `&&`/`||`/`!` on `bool` with short-circuit evaluation.
 
+## Pipeline
+
+```
+source → lexer → parser → sema → (interpreter)
+                           ↓
+                          IR → opt? → x86-64 asm → cc/gcc → executable
+```
