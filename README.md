@@ -208,3 +208,36 @@ The test suite validates every layer of the compiler against a suite of 59 unit 
 compiler/
 ├── include/
 │   └── tiny/
+│       ├── span.hpp          # Source location spans & diagnostic helpers
+│       ├── token.hpp         # Token definitions & TokenType enum
+│       ├── lexer.hpp         # Lexer declaration
+│       ├── ast.hpp           # AST node classes & type definitions
+│       ├── parser.hpp        # Recursive-descent & Pratt parser
+│       ├── sema.hpp          # Symbol table & type checker
+│       ├── interp.hpp        # Tree-walking reference interpreter
+│       ├── ir.hpp            # Three-Address Code IR representation
+│       └── codegen.hpp       # x86-64 assembly generator
+├── src/
+│   ├── lexer/lexer.cpp       # Tokenization implementation
+│   ├── ast/ast.cpp           # AST printing and node methods
+│   ├── parser/parser.cpp     # Parser grammar logic
+│   ├── sema/typeck.cpp       # Semantic analysis passes
+│   ├── interpreter/eval.cpp  # Reference interpreter
+│   ├── ir/
+│   │   ├── ir.cpp            # IR builder & printer
+│   │   ├── lower.cpp         # AST to TAC lowering
+│   │   └── opt.cpp           # Constant folding & dead-code elimination
+│   ├── codegen/x86.cpp       # AT&T x86-64 assembly emitter
+│   └── cli/main.cpp          # Command-line driver ('tiny run' & 'tiny build')
+├── tests/                    # Unit tests & integration suites
+├── examples/                 # Golden sample programs (.tiny & .expected)
+├── CMakeLists.txt            # Root CMake build configuration
+├── LANGUAGE.md               # Formal language reference & grammar
+└── README.md                 # Compiler documentation & quickstart
+```
+
+---
+
+## License
+
+This project is open-source under the MIT License.
